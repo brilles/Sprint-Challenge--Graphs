@@ -119,28 +119,19 @@ def traverseMaze():
             traversalGraph[player.currentRoom.id][oppDirection] = roomA
 
         else:
-            # walk back to the nearest room that does contain an unexplored path using BFS
-            # reversePath = traversalPath[::-1]
-            # for move in reversePath:
-            #     oppMove = getOppositeDirection(move)
-            #     player.travel(oppMove)
-            #     traversalPath.append(oppMove)
-            #     if "?" in traversalGraph[player.currentRoom.id].values():
-            #         break
             reversePath = findShortestPathToUnexploredRoom(
                 player.currentRoom.id)
-            reversePath.pop()
 
             # convert the IDs to directions [4,3,0] => [e, e]
             # append those directions to the traversalPath
             # continue
-            directions = []
-            for roomId in reversePath:
-                exits = traversalGraph[roomId]
-                for move in exits:
-                    if traversalGraph[roomId][move] < roomId:
-                        directions.append(move)
 
+            directions = []
+            for roomID in reversePath:
+                for move in traversalGraph[player.currentRoom.id]:
+                    if roomID == traversalGraph[player.currentRoom.id][move]:
+                        directions.append(move)
+            
             for i in directions:
                 player.travel(i)
                 traversalPath.append(i)
